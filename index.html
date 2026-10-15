@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Busy Signal IT</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Edmund Gumbo builds systems that take over the repetitive work in a business. Johannesburg, working worldwide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap">
+<style>
+/* Layout: live surface. Real product screens carry the page; type sits on open space with shifting anchors (lead hero, split story with a held stage, trailing ledger, centred tool, lead close). */
+:root {
+  --canvas: #eceeea;
+  --surface: #f7f8f5;
+  --ink: #12201e;
+  --ink-soft: #4b5d59;
+  --accent: #0b5f63;
+  --accent-ink: #f1f8f6;
+  --line: #c9d2ce;
+  --ring-let: #b4c2bd;
+  --shade: 20 40 38;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --gutter: max(20px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(20px, env(safe-area-inset-right, 0px));
+  --section: clamp(72px, 11vw, 168px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0e1514; --surface: #152120; --ink: #e3ebe7; --ink-soft: #9db1ac;
+    --accent: #52b8b0; --accent-ink: #062321; --line: #29403c; --ring-let: #3a524d; --shade: 0 0 0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --canvas: #0e1514; --surface: #152120; --ink: #e3ebe7; --ink-soft: #9db1ac;
+  --accent: #52b8b0; --accent-ink: #062321; --line: #29403c; --ring-let: #3a524d; --shade: 0 0 0;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: var(--accent); color: var(--accent-ink); }
+a { color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3 { font-family: var(--display); font-stretch: 104%; margin: 0; text-wrap: balance; color: var(--ink); }
+p { margin: 0; text-wrap: pretty; }
+
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+
+/* Bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; background: color-mix(in srgb, var(--canvas) 90%, transparent); backdrop-filter: saturate(1.2) blur(8px); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.mark { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-family: var(--display); font-weight: 700; font-stretch: 110%; letter-spacing: -0.01em; }
+.mark svg { flex: none; }
+.links { display: flex; align-items: center; gap: 26px; font-family: var(--display); font-size: 0.9rem; }
+.links a { color: var(--ink-soft); text-decoration: none; transition: color 160ms var(--ease); }
+.links a:hover { color: var(--ink); }
+.links .hide-s { }
+@media (max-width: 640px) { .links .hide-s { display: none; } }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
+  font-family: var(--display); font-weight: 650; font-size: 0.95rem; letter-spacing: 0.005em;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
+  padding: 13px 20px; border-radius: 3px; border: 0; cursor: pointer;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.18) inset, 0 6px 16px -8px rgb(var(--shade) / 0.5);
+  transition: transform 140ms var(--ease), background 160ms var(--ease);
+}
+.btn:hover { background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+.btn:active { transform: translateY(1px); }
+.links .btn { padding: 9px 14px; font-size: 0.86rem; color: var(--accent-ink); }
+
+/* Hero */
+.hero { padding-block: clamp(40px, 7vw, 96px) var(--section); overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+.where { font-family: var(--display); font-size: 0.92rem; color: var(--ink-soft); letter-spacing: 0.01em; }
+.hero h1 { font-size: clamp(2.3rem, 1rem + 3.8vw, 3.75rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 760; margin-top: 18px; max-width: 15ch; }
+.sub { font-size: clamp(1.08rem, 1rem + 0.45vw, 1.3rem); color: var(--ink-soft); max-width: 40ch; margin-top: 22px; line-height: 1.55; }
+.hero .btn { margin-top: 32px; }
+
+.stage-hero { position: relative; min-height: 568px; }
+.plane { margin: 0; position: absolute; will-change: transform; }
+.plane-back { top: 0; right: 0; width: 90%; }
+.plane-front { left: 0; bottom: 56px; width: 54%; }
+.stage-cap { position: absolute; right: 0; bottom: 0; margin: 0; max-width: 46ch; text-align: right; }
+.cap { font-family: var(--display); font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.01em; margin-top: 12px; }
+.k { font-family: var(--display); font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.02em; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.55) inset, 0 34px 60px -34px rgb(var(--shade) / 0.5), 0 2px 6px -3px rgb(var(--shade) / 0.2); }
+.stock { padding: 24px 24px 26px; }
+.stock-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.big { font-family: var(--display); font-weight: 760; font-size: 2.4rem; letter-spacing: -0.03em; line-height: 1; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.big span { font-size: 0.95rem; font-weight: 500; letter-spacing: 0; color: var(--ink-soft); }
+.legend { display: flex; gap: 14px; font-family: var(--display); font-size: 0.78rem; color: var(--ink-soft); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.sw-a { background: var(--accent); } .sw-l { background: var(--ring-let); }
+.rings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+.ring { text-align: center; min-width: 0; }
+.ring svg { width: 100%; max-width: 104px; height: auto; display: block; margin: 0 auto; overflow: visible; }
+.ring .rn { font-family: var(--display); font-weight: 720; font-size: 15px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.ring .rt { font-family: var(--display); font-size: 7.5px; fill: var(--ink-soft); }
+.ring .seg { transition: stroke-width 140ms var(--ease); }
+.ring:hover .seg { stroke-width: 9; }
+.ring .lbl { font-family: var(--display); font-size: 0.78rem; color: var(--ink); margin-top: 8px; line-height: 1.25; }
+
+.ucard { padding: 18px 18px 16px; }
+.uhead { display: flex; align-items: center; gap: 12px; }
+.ubadge { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--display); font-weight: 720; font-size: 0.95rem; flex: none; }
+.uname { font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.ugrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin: 16px 0 0; }
+.ugrid dt { font-family: var(--display); font-size: 0.72rem; color: var(--ink-soft); }
+.ugrid dd { margin: 2px 0 0; font-family: var(--display); font-weight: 620; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.ugrid em { font-style: normal; font-size: 0.68rem; font-weight: 600; color: var(--accent); margin-left: 4px; }
+.utog { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-family: var(--display); font-size: 0.86rem; }
+.knob { width: 38px; height: 22px; border-radius: 22px; background: var(--accent); position: relative; flex: none; }
+.knob::after { content: ""; position: absolute; top: 3px; right: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-ink); }
+
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .stage-hero { min-height: 0; margin-top: 18px; padding-bottom: 0; }
+  .plane, .stage-cap { position: relative; }
+  .plane-back { width: 100%; right: auto; }
+  .plane-front { left: auto; bottom: auto; width: min(340px, 88%); margin: -44px 0 0 auto; }
+  .stage-cap { text-align: left; margin-top: 14px; }
+}
+@media (max-width: 520px) {
+  .hero h1 { font-size: 2.3rem; }
+  .rings { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; }
+  .stock { padding: 18px; }
+}
+
+/* Story: the peak */
+.story { padding-block: var(--section) calc(var(--section) * 1.15); background: var(--surface); border-block: 1px solid var(--line); }
+.story-head { max-width: 760px; }
+.story-head h2 { font-size: clamp(1.9rem, 1rem + 3.2vw, 3.4rem); line-height: 1.04; letter-spacing: -0.03em; font-weight: 740; }
+.story-head p { margin-top: 22px; font-size: 1.15rem; color: var(--ink-soft); max-width: 58ch; }
+.story-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 80px); margin-top: clamp(56px, 8vw, 110px); }
+.steps { list-style: none; margin: 0; padding: 0; }
+.step { min-height: 62vh; padding-block: 8vh; border-top: 1px solid var(--line); opacity: 0.45; transition: opacity 260ms var(--ease); }
+.step:first-child { padding-top: 0; border-top: 0; }
+.step.on, .nojs .step { opacity: 1; }
+.step time { font-family: var(--display); font-size: 0.85rem; color: var(--accent); font-weight: 600; letter-spacing: 0.02em; }
+.step h3 { font-size: clamp(1.35rem, 1rem + 1.2vw, 1.8rem); line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; margin-top: 10px; }
+.step p { margin-top: 14px; color: var(--ink-soft); max-width: 46ch; }
+
+.held { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); align-self: start; }
+.panel { display: none; }
+.panel.on { display: block; animation: rise 420ms var(--ease) both; }
+.nojs .panel { display: block; margin-bottom: 28px; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px) scale(0.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .panel.on { animation: none; } .step { transition: none; } }
+
+.log { background: var(--canvas); border: 1px solid var(--line); border-radius: 10px; padding: clamp(18px, 2.5vw, 30px); display: flex; flex-direction: column; gap: 14px;
+  box-shadow: 0 30px 50px -36px rgb(var(--shade) / 0.5); }
+.msg { max-width: 88%; padding: 12px 16px; border-radius: 10px; font-size: 1rem; line-height: 1.5; }
+.msg b { display: block; font-family: var(--display); font-weight: 650; font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.msg.them { background: var(--surface); border: 1px solid var(--line); align-self: flex-start; }
+.msg.them b { color: var(--ink-soft); }
+.msg.alec { background: var(--accent); color: var(--accent-ink); align-self: flex-end; }
+.msg.alec b { color: color-mix(in srgb, var(--accent-ink) 78%, transparent); }
+.msg .hid { display: inline-block; width: 6.5em; height: 0.9em; vertical-align: -0.05em; border-radius: 2px; background: color-mix(in srgb, var(--ink-soft) 35%, transparent); }
+.log .note { font-family: var(--display); font-size: 0.8rem; color: var(--ink-soft); }
+.field { background: var(--canvas); border: 1px solid var(--line); border-radius: 18px; padding: clamp(18px, 2.5vw, 28px); box-shadow: 0 30px 50px -36px rgb(var(--shade) / 0.5); }
+.field-row { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 10px 22px 10px 12px; }
+.ring-ico { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface)); flex: none; }
+.field-main { min-width: 0; }
+.field-val { font-family: var(--display); font-weight: 680; font-size: 1.35rem; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.field-help { margin-top: 16px; color: var(--ink-soft); font-size: 0.98rem; }
+.field .note { margin-top: 12px; }
+
+.proof { margin: clamp(64px, 9vw, 120px) 0 0; }
+.inbox { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); background: var(--canvas); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; box-shadow: 0 40px 70px -40px rgb(var(--shade) / 0.55); }
+.threads { list-style: none; margin: 0; padding: 10px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+.t { display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: 14px; min-width: 0; }
+.t.on { background: var(--surface); box-shadow: 0 1px 0 rgb(255 255 255 / 0.5) inset, 0 6px 14px -10px rgb(var(--shade) / 0.5); }
+.av { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; font-family: var(--display); font-weight: 680; font-size: 0.8rem; color: var(--accent); background: color-mix(in srgb, var(--accent) 13%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line)); }
+.av-l { width: 46px; height: 46px; }
+.tm { min-width: 0; }
+.tn { font-family: var(--display); font-weight: 650; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tp { font-family: var(--display); font-size: 0.8rem; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.chip { font-size: 0.68rem; font-weight: 650; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface); }
+.chip.ok { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); background: color-mix(in srgb, var(--accent) 9%, var(--surface)); }
+.thread { display: flex; flex-direction: column; min-width: 0; }
+.th-head { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.th-head .tp { white-space: normal; }
+.wa { margin-left: auto; font-family: var(--display); font-size: 0.78rem; font-weight: 650; color: var(--accent-ink); background: var(--accent); padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
+.th-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.th-body .msg { border-radius: 18px; }
+.th-body .msg.them { border-bottom-left-radius: 6px; }
+.th-body .msg.alec { border-bottom-right-radius: 6px; }
+.pics { display: flex; gap: 8px; align-self: flex-end; }
+.pics span { width: 64px; height: 64px; border-radius: 14px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 30%, var(--surface)), color-mix(in srgb, var(--accent) 8%, var(--surface))); border: 1px solid var(--line); }
+@media (max-width: 760px) {
+  .inbox { grid-template-columns: 1fr; }
+  .threads { border-right: 0; border-bottom: 1px solid var(--line); }
+  .threads .t:nth-child(n+4) { display: none; }
+  .wa { display: none; }
+}
+
+.bulk { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; box-shadow: 0 30px 60px -36px rgb(var(--shade) / 0.5); }
+.bulk-top { display: flex; align-items: center; gap: 16px; }
+.dial { position: relative; width: 64px; height: 64px; flex: none; }
+.dial b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 720; font-size: 0.95rem; }
+.bt { width: 100%; border-collapse: collapse; margin-top: 18px; font-family: var(--display); font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+.bt th { text-align: left; font-weight: 500; font-size: 0.74rem; color: var(--ink-soft); padding: 0 0 8px; }
+.bt td { padding: 10px 0; border-top: 1px solid var(--line); }
+.bt td:last-child, .bt th:last-child { text-align: right; }
+.bt td:last-child { font-weight: 680; color: var(--accent); }
+.bulk-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; font-family: var(--display); font-size: 0.84rem; color: var(--ink-soft); }
+.apply { font-weight: 650; color: var(--accent-ink); background: var(--accent); padding: 8px 18px; border-radius: 999px; }
+.trail { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-family: var(--display); font-size: 0.8rem; color: var(--ink-soft); }
+.dot-s { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+
+@media (max-width: 900px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .step { min-height: 0; padding-block: 28px; opacity: 1; }
+  .held { position: static; }
+  .panel { display: block; margin-bottom: 26px; }
+  .panel.on { animation: none; }
+}
+
+/* Ledger */
+.ledger { padding-block: var(--section); }
+.ledger .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.ledger figure { margin: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); }
+.ledger figure img { border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 30px 60px -36px rgb(var(--shade) / 0.5); }
+.ledger h2 { font-size: clamp(1.7rem, 1rem + 2.2vw, 2.6rem); line-height: 1.06; letter-spacing: -0.028em; font-weight: 740; }
+.ledger .intro { margin-top: 16px; color: var(--ink-soft); max-width: 46ch; }
+.rows { list-style: none; margin: 34px 0 0; padding: 0; }
+.rows li { padding: 22px 0; border-top: 1px solid var(--line); }
+.rows li:last-child { border-bottom: 1px solid var(--line); }
+.rows h3 { font-size: 1.12rem; font-weight: 680; letter-spacing: -0.01em; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.rows h3 span { font-size: 0.78rem; font-weight: 600; color: var(--accent); letter-spacing: 0.04em; white-space: nowrap; }
+.rows p { margin-top: 6px; color: var(--ink-soft); font-size: 1rem; }
+.built { margin-top: 26px; font-size: 0.98rem; color: var(--ink-soft); }
+.built strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 900px) { .ledger .wrap { grid-template-columns: 1fr; } .ledger figure { position: static; order: 2; } }
+
+/* Tool: your business */
+.yours { padding-block: var(--section); background: var(--ink); color: var(--canvas); }
+.yours h2, .yours h3 { color: var(--canvas); }
+.yours .wrap { max-width: 920px; }
+.yours h2 { font-size: clamp(1.9rem, 1rem + 3vw, 3.2rem); line-height: 1.04; letter-spacing: -0.03em; font-weight: 740; text-align: center; }
+.yours .lead { text-align: center; color: color-mix(in srgb, var(--canvas) 72%, var(--ink)); margin: 18px auto 0; max-width: 52ch; }
+.ask { margin: 40px auto 0; max-width: 640px; }
+.ask label { display: block; font-family: var(--display); font-size: 0.86rem; color: color-mix(in srgb, var(--canvas) 70%, var(--ink)); margin-bottom: 10px; }
+.ask input {
+  width: 100%; font: inherit; font-family: var(--display); font-size: clamp(1.1rem, 1rem + 0.8vw, 1.5rem); font-weight: 560;
+  color: var(--canvas); background: color-mix(in srgb, var(--canvas) 7%, var(--ink)); caret-color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--canvas) 22%, var(--ink)); border-radius: 6px; padding: 16px 18px;
+  transition: border-color 160ms var(--ease);
+}
+.ask input::placeholder { color: color-mix(in srgb, var(--canvas) 42%, var(--ink)); }
+.ask input:focus { outline: none; border-color: var(--accent); }
+.picks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.picks button {
+  font-family: var(--display); font-size: 0.86rem; color: color-mix(in srgb, var(--canvas) 82%, var(--ink));
+  background: transparent; border: 1px solid color-mix(in srgb, var(--canvas) 24%, var(--ink)); border-radius: 3px;
+  padding: 7px 12px; cursor: pointer; transition: border-color 140ms var(--ease), color 140ms var(--ease), transform 120ms var(--ease);
+}
+.picks button:hover { border-color: var(--accent); color: var(--canvas); }
+.picks button:active { transform: translateY(1px); }
+.answer { margin: 34px auto 0; max-width: 640px; border-top: 1px solid color-mix(in srgb, var(--canvas) 18%, var(--ink)); padding-top: 26px; min-height: 220px; }
+.answer .said { font-family: var(--display); font-size: 0.86rem; color: var(--accent); }
+.answer h3 { font-size: 1.3rem; font-weight: 680; letter-spacing: -0.015em; margin-top: 6px; }
+.answer ul { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.answer li { padding-left: 22px; position: relative; color: color-mix(in srgb, var(--canvas) 88%, var(--ink)); }
+.answer li::before { content: ""; position: absolute; left: 2px; top: 0.72em; width: 9px; height: 2px; background: var(--accent); }
+.answer .fine { margin-top: 22px; font-size: 0.92rem; color: color-mix(in srgb, var(--canvas) 58%, var(--ink)); }
+.answer.swap > * { animation: rise 360ms var(--ease) both; }
+@media (prefers-reduced-motion: reduce) { .answer.swap > * { animation: none; } }
+@media (max-width: 640px) { .yours h2, .yours .lead { text-align: left; } }
+
+/* Close */
+.close { padding-block: var(--section) clamp(56px, 7vw, 96px); }
+.close .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 5vw, 80px); align-items: end; }
+.close h2 { font-size: clamp(2.3rem, 1rem + 5vw, 5rem); line-height: 0.98; letter-spacing: -0.04em; font-weight: 780; max-width: 11ch; }
+.close .lead { margin-top: 22px; color: var(--ink-soft); max-width: 44ch; font-size: 1.12rem; }
+.reach { border-top: 2px solid var(--ink); }
+.reach .r { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.reach .k { font-family: var(--display); font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.03em; }
+.reach .v { font-family: var(--display); font-weight: 620; font-size: 1.08rem; margin-top: 2px; overflow-wrap: anywhere; color: var(--ink); }
+.reach a.v { text-decoration: none; }
+.reach a.v:hover { color: var(--accent); }
+.reach .l { min-width: 0; }
+.copy {
+  flex: none; font-family: var(--display); font-size: 0.8rem; font-weight: 600; color: var(--ink);
+  background: transparent; border: 1px solid var(--line); border-radius: 3px; padding: 7px 12px; cursor: pointer;
+  transition: border-color 140ms var(--ease), color 140ms var(--ease);
+}
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+.copy.done { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 900px) { .close .wrap { grid-template-columns: 1fr; } }
+
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; padding-block: 26px 34px; border-top: 1px solid var(--line); font-family: var(--display); font-size: 0.84rem; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Busy Signal IT, back to top">
+      <svg width="34" height="22" viewBox="0 0 34 22" aria-hidden="true"><circle cx="11" cy="11" r="8.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M2.5 11H32" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/></svg>
+      Busy Signal IT
+    </a>
+    <nav class="links" aria-label="Main">
+      <a class="hide-s" href="#alec">Work</a>
+      <a class="hide-s" href="#yours">Your business</a>
+      <a class="btn" href="#contact">Talk to Edmund</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="where">Edmund Gumbo · Johannesburg, working worldwide</p>
+      <h1>Hand me the job you repeat every day.</h1>
+      <p class="sub">I learn how your business runs, then build the system that does the routine part for you.</p>
+      <a class="btn" href="#contact">Talk to Edmund</a>
+    </div>
+    <div class="stage-hero" id="heroStage">
+      <figure class="plane plane-back" data-depth="0.6">
+        <div class="stock card">
+          <div class="stock-top">
+            <div><div class="k">Stock today</div><div class="big">22 <span>available of 164</span></div></div>
+            <div class="legend" aria-hidden="true"><span><i class="sw sw-a"></i>Available</span><span><i class="sw sw-l"></i>Let</span></div>
+          </div>
+          <div class="rings"><div class="ring"><svg viewBox="0 0 100 100" role="img" aria-label="Jacaranda Court: 6 of 44 available"><title>Jacaranda Court: 6 of 44 available</title><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--ring-let)" stroke-width="8" stroke-dasharray="0 29.13 182.30 213.63" transform="rotate(-90 50 50)"/><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="26.93 213.63" transform="rotate(-90 50 50)"/><text class="rn" x="50" y="52" text-anchor="middle">6</text><text class="rt" x="50" y="64" text-anchor="middle">of 44</text></svg><div class="lbl">Jacaranda Court</div></div><div class="ring"><svg viewBox="0 0 100 100" role="img" aria-label="Protea House: 4 of 38 available"><title>Protea House: 4 of 38 available</title><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--ring-let)" stroke-width="8" stroke-dasharray="0 22.49 188.94 213.63" transform="rotate(-90 50 50)"/><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="20.29 213.63" transform="rotate(-90 50 50)"/><text class="rn" x="50" y="52" text-anchor="middle">4</text><text class="rt" x="50" y="64" text-anchor="middle">of 38</text></svg><div class="lbl">Protea House</div></div><div class="ring"><svg viewBox="0 0 100 100" role="img" aria-label="Acacia Place: 5 of 30 available"><title>Acacia Place: 5 of 30 available</title><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--ring-let)" stroke-width="8" stroke-dasharray="0 35.60 175.82 213.63" transform="rotate(-90 50 50)"/><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="33.40 213.63" transform="rotate(-90 50 50)"/><text class="rn" x="50" y="52" text-anchor="middle">5</text><text class="rt" x="50" y="64" text-anchor="middle">of 30</text></svg><div class="lbl">Acacia Place</div></div><div class="ring"><svg viewBox="0 0 100 100" role="img" aria-label="Marula Heights: 7 of 52 available"><title>Marula Heights: 7 of 52 available</title><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--ring-let)" stroke-width="8" stroke-dasharray="0 28.76 182.67 213.63" transform="rotate(-90 50 50)"/><circle class="seg" cx="50" cy="50" r="34" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="26.56 213.63" transform="rotate(-90 50 50)"/><text class="rn" x="50" y="52" text-anchor="middle">7</text><text class="rt" x="50" y="64" text-anchor="middle">of 52</text></svg><div class="lbl">Marula Heights</div></div></div>
+          <table class="sr-only"><caption>Units by building, sample data</caption><tr><th>Building</th><th>Available</th><th>Total</th></tr><tr><td>Jacaranda Court</td><td>6</td><td>44</td></tr><tr><td>Protea House</td><td>4</td><td>38</td></tr><tr><td>Acacia Place</td><td>5</td><td>30</td></tr><tr><td>Marula Heights</td><td>7</td><td>52</td></tr></table>
+        </div>
+      </figure>
+      <figure class="plane plane-front" data-depth="1.4">
+        <div class="ucard card">
+          <div class="uhead"><span class="ubadge">4B</span><div><div class="uname">Unit 4B</div><div class="k">Protea House</div></div></div>
+          <dl class="ugrid">
+            <div><dt>Type</dt><dd>Studio</dd></div>
+            <div><dt>Rent</dt><dd>R3 100</dd></div>
+            <div><dt>Deposit</dt><dd>R3 565 <em>auto</em></dd></div>
+            <div><dt>Property24 advert</dt><dd>117 000 0002</dd></div>
+          </dl>
+          <div class="utog"><span class="knob" aria-hidden="true"></span>On the website</div>
+        </div>
+      </figure>
+      <p class="cap stage-cap">The Stock Manager, redrawn with sample data. The live system runs at RISKPROP Realty.</p>
+    </div>
+  </div>
+</section>
+
+<section class="story" id="alec">
+  <div class="wrap">
+    <div class="story-head">
+      <h2>Alec answers RISKPROP's tenants on WhatsApp, day and night.</h2>
+      <p>He is the number on the agency's Property24 adverts. He reads the live stock list, quotes real prices, sends unit photos and books viewings, then tells the agent on duty. When he gets something wrong, I watch it happen in the chat log and fix it.</p>
+    </div>
+
+    <div class="story-grid">
+      <ol class="steps" id="steps">
+        <li class="step on" data-step="1">
+          <time>Monday 12 October, 15:15</time>
+          <h3>A message arrives with nothing but a listing number.</h3>
+          <p>It came from a Property24 advert, but Alec had no way to match the number to a unit. He asked a sensible question, and the person had to explain where they came from.</p>
+        </li>
+        <li class="step" data-step="2">
+          <time>The fix</time>
+          <h3>Every unit now carries its advert number.</h3>
+          <p>The team pastes it into the Stock Manager once, next to the rent and the photos. Alec reads it from the same place, so he knows which advert a person clicked before they say a word.</p>
+        </li>
+        <li class="step" data-step="3">
+          <time>Tuesday 13 October, 18:17</time>
+          <h3>The next enquiry gets a straight answer.</h3>
+          <p>Alec opens with the building, the unit and the price of the advert the person tapped. No back and forth to work out what they meant.</p>
+        </li>
+      </ol>
+
+      <div class="held" aria-live="polite">
+        <div class="panel on" data-panel="1">
+          <div class="log">
+            <div class="msg them"><b>Enquiry · 15:15</b>Hi Alec... Is this property still available? 117 000 0001</div>
+            <div class="msg alec"><b>Alec · 15:16</b>Thanks for your message. That looks like a listing reference number from one of the property sites, but I don't see exactly which building or unit it refers to on my side.</div>
+            <div class="msg them"><b>Enquiry · 15:16</b>The listing is from Property24</div>
+            <p class="note">Sample conversation, based on a real one.</p>
+          </div>
+        </div>
+        <div class="panel" data-panel="2">
+          <div class="field">
+            <div class="field-row">
+              <span class="ring-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.6 2.6L16 9.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="field-main">
+                <div class="k">Property24 advert, Unit 4B</div>
+                <div class="field-val">117 000 0002</div>
+              </div>
+            </div>
+            <p class="field-help">Paste the number from the advert's web address. Alec recognises anyone who messages from that advert.</p>
+            <p class="note">Unit editor, redrawn with sample data.</p>
+          </div>
+        </div>
+        <div class="panel" data-panel="3">
+          <div class="log">
+            <div class="msg them"><b>Sipho · 18:16</b>Hi, I saw this on Property24</div>
+            <div class="msg alec"><b>Alec · 18:17</b>Hi Sipho! You clicked on the ad for the studio at Protea House, R3 100 a month. Shall I send you photos?</div>
+            <p class="note">Sample conversation, based on a real one.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <figure class="proof">
+      <div class="inbox">
+        <ul class="threads" aria-label="Conversations, sample data">
+          <li class="t on"><span class="av">TM</span><div class="tm"><div class="tn">Thandi Mokoena <span class="chip ok">Viewing booked</span></div><div class="tp">071 000 0001 · Great, Thandi, you're set for Friday at 13:00.</div></div></li>
+          <li class="t"><span class="av">SD</span><div class="tm"><div class="tn">Sipho Dlamini <span class="chip">New lead</span></div><div class="tp">071 000 0002 · You clicked on the ad for the studio at Protea House...</div></div></li>
+          <li class="t"><span class="av">LN</span><div class="tm"><div class="tn">Lerato Nkosi <span class="chip ok">Viewing booked</span></div><div class="tp">071 000 0003 · Wednesday it is. Which time suits you?</div></div></li>
+          <li class="t"><span class="av">PV</span><div class="tm"><div class="tn">Pieter van Wyk</div><div class="tp">071 000 0004 · We have studios open at Acacia Place.</div></div></li>
+          <li class="t"><span class="av">AZ</span><div class="tm"><div class="tn">Ayanda Zulu <span class="chip ok">Viewing booked</span></div><div class="tp">071 000 0005 · See you Saturday at 10:00.</div></div></li>
+        </ul>
+        <div class="thread">
+          <div class="th-head"><span class="av av-l">TM</span><div><div class="tn">Thandi Mokoena</div><div class="tp">071 000 0001</div></div><span class="wa">Open in WhatsApp</span></div>
+          <div class="th-body">
+            <div class="msg them"><b>Thandi · 12:41</b>Hi, is the studio at Jacaranda Court still available?</div>
+            <div class="msg alec"><b>Alec · 12:41</b>Hi Thandi! Yes, there's a studio open at Jacaranda Court for R3 100 a month. Here are some photos.</div>
+            <div class="pics" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="msg them"><b>Thandi · 12:44</b>Can I see it on Friday?</div>
+            <div class="msg alec"><b>Alec · 12:44</b>Friday works. I have 11:00 or 13:00. Which suits you?</div>
+            <div class="msg them"><b>Thandi · 12:45</b>13:00 please</div>
+            <div class="msg alec"><b>Alec · 12:45</b>Great, Thandi, you're set for Friday at 13:00. The agent on duty has your details.</div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="cap">Every conversation lands in the Stock Manager, so the team can read what Alec said and step in. Redrawn with sample names and numbers.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="ledger" id="work">
+  <div class="wrap">
+    <figure>
+      <div class="bulk">
+        <div class="bulk-top">
+          <div class="dial" aria-hidden="true"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--line)" stroke-width="6"/><circle cx="32" cy="32" r="26" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="11.4 163.4" transform="rotate(-90 32 32)"/></svg><b>7%</b></div>
+          <div><div class="k">Rent increase, preview</div><div class="uname">Jacaranda Court</div></div>
+        </div>
+        <table class="bt">
+          <thead><tr><th>Unit</th><th>Now</th><th>After</th></tr></thead>
+          <tbody>
+            <tr><td>1A</td><td>R3 100</td><td>R3 317</td></tr>
+            <tr><td>1B</td><td>R3 100</td><td>R3 317</td></tr>
+            <tr><td>2B</td><td>R2 750</td><td>R2 943</td></tr>
+            <tr><td>3A</td><td>R2 750</td><td>R2 943</td></tr>
+            <tr><td>4A</td><td>R3 100</td><td>R3 317</td></tr>
+          </tbody>
+        </table>
+        <div class="bulk-foot"><span>44 units in this building</span><span class="apply">Apply</span></div>
+        <div class="trail"><span class="dot-s" aria-hidden="true"></span>Naledi K. raised rents at Acacia Place · 10:42</div>
+      </div>
+      <figcaption class="cap">One list for every unit and shop. Change a price here and it changes on the website and in Alec's answers. Redrawn with sample data.</figcaption>
+    </figure>
+    <div>
+      <h2>Alec is one part. The rest runs the agency day to day.</h2>
+      <p class="intro">Everything below reads from the same database, so the team never has two numbers that disagree.</p>
+      <ul class="rows">
+        <li>
+          <h3>Stock Manager <span>Live</span></h3>
+          <p>Where the team prices, edits and switches units on and off. Bulk rent increases with a preview first, a record of who changed what, and three levels of access.</p>
+        </li>
+        <li>
+          <h3>Public website <span>Live</span></h3>
+          <p>Listings come straight from the Stock Manager and disappear the moment a unit is let. It replaced the agency's paid website vendor.</p>
+        </li>
+        <li>
+          <h3>ROY, utilities checks <span>In use</span></h3>
+          <p>Takes the monthly municipal and electricity figures the team captures and lists the bills that look wrong, so management can check them and mark them fixed.</p>
+        </li>
+        <li>
+          <h3>Team board <span>In use</span></h3>
+          <p>One shared board for six departments, from cleaning to accounts, so the owner and the team look at the same picture.</p>
+        </li>
+      </ul>
+      <p class="built"><strong>Built with</strong> n8n, Supabase, React, the WhatsApp Business API and OpenAI models. I pick the tools to suit the job.</p>
+    </div>
+  </div>
+</section>
+
+<section class="yours" id="yours">
+  <div class="wrap">
+    <h2>Property is where I proved it. Your business is next.</h2>
+    <p class="lead">Mechanics, salons, creators, kitchens. If someone in your business does the same thing by hand every day, a system can probably take it over.</p>
+
+    <div class="ask">
+      <label for="biz">What does your business do?</label>
+      <input id="biz" type="text" autocomplete="off" maxlength="60" placeholder="A panel beater in Germiston">
+      <div class="picks" id="picks">
+        <button type="button" data-v="Mechanic">Mechanic</button>
+        <button type="button" data-v="Hair salon">Hair salon</button>
+        <button type="button" data-v="Content creator">Content creator</button>
+        <button type="button" data-v="Restaurant">Restaurant</button>
+        <button type="button" data-v="Accounting firm">Accounting firm</button>
+        <button type="button" data-v="Plumbing company">Plumbing company</button>
+      </div>
+    </div>
+
+    <div class="answer" id="answer" aria-live="polite">
+      <p class="said">Example: a mechanic</p>
+      <h3>Where I would start</h3>
+      <ul>
+        <li>Customers book a slot on WhatsApp and get a reminder the day before.</li>
+        <li>Quotes go out the same day, and anyone who hasn't replied gets a nudge two days later.</li>
+        <li>You get a message when a part you use every week runs low.</li>
+      </ul>
+      <p class="fine">These are starting points. The real plan comes from one conversation about how your week runs.</p>
+    </div>
+  </div>
+</section>
+
+<section class="close" id="contact">
+  <div class="wrap">
+    <div>
+      <h2>Tell me how your week runs.</h2>
+      <p class="lead">I work with any business that has a routine worth handing over, in South Africa or anywhere else. Send a message and I'll reply myself.</p>
+    </div>
+    <div class="reach">
+      <div class="r">
+        <div class="l"><div class="k">Email</div><div class="v" id="v-mail">busysignalit@gmail.com</div></div>
+        <button class="copy" type="button" id="c-mail" data-copy="busysignalit@gmail.com">Copy</button>
+      </div>
+      <div class="r">
+        <div class="l"><div class="k">WhatsApp</div><div class="v" id="v-wa">+27 68 161 6498</div></div>
+        <button class="copy" type="button" id="c-wa" data-copy="+27 68 161 6498">Copy</button>
+      </div>
+      <div class="r">
+        <div class="l"><div class="k">LinkedIn</div><a class="v" href="https://www.linkedin.com/in/edmund-gumbo-a6965584" target="_blank" rel="noopener">Edmund Gumbo</a></div>
+      </div>
+      <div class="r">
+        <div class="l"><div class="k">GitHub</div><a class="v" href="https://github.com/Kunta-ai" target="_blank" rel="noopener">Kunta-ai</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Busy Signal IT, founded in Johannesburg in 2020</span>
+    <span>Edmund Gumbo</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Hero planes: a little depth from the pointer and the scroll */
+  var stage = document.getElementById('heroStage');
+  var planes = stage ? stage.querySelectorAll('.plane') : [];
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var px = 0, py = 0, tx = 0, ty = 0;
+  if (!reduce && planes.length && window.innerWidth > 900) {
+    if (fine) {
+      stage.closest('.hero').addEventListener('pointermove', function (e) {
+        var r = stage.getBoundingClientRect();
+        tx = ((e.clientX - (r.left + r.width / 2)) / r.width);
+        ty = ((e.clientY - (r.top + r.height / 2)) / r.height);
+      });
+    }
+    (function loop() {
+      px += (tx - px) * 0.08; py += (ty - py) * 0.08;
+      var s = Math.min(window.scrollY, 700);
+      planes.forEach(function (p) {
+        var d = parseFloat(p.getAttribute('data-depth')) || 1;
+        p.style.transform = 'translate3d(' + (px * 10 * d).toFixed(2) + 'px,' + (py * 8 * d - s * 0.06 * d).toFixed(2) + 'px,0)';
+      });
+      requestAnimationFrame(loop);
+    })();
+  }
+
+  /* Story: the held panel follows the step being read */
+  var steps = document.querySelectorAll('.step');
+  var panels = document.querySelectorAll('.panel');
+  function show(n) {
+    steps.forEach(function (s) { s.classList.toggle('on', s.getAttribute('data-step') === n); });
+    panels.forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-panel') === n); });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) show(e.target.getAttribute('data-step')); });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    steps.forEach(function (s) { io.observe(s); });
+  } else {
+    document.documentElement.classList.add('nojs');
+  }
+
+  /* Your business: starting points by type of work */
+  var book = [
+    { k: ['mechanic','garage','workshop','auto','car ','cars','panel','tyre','tire','motor','vehicle'], items: [
+      'Customers book a slot on WhatsApp and get a reminder the day before.',
+      'Quotes go out the same day, and anyone who hasn’t replied gets a nudge two days later.',
+      'You get a message when a part you use every week runs low.' ] },
+    { k: ['salon','hair','barber','nail','beauty','spa','lash','brow','makeup','braid'], items: [
+      'Clients book and move appointments on WhatsApp, so you aren’t answering the phone with your hands full.',
+      'A reminder the day before, and a message a few weeks later asking if they want to book again.' ] },
+    { k: ['creator','influencer','content','instagram','facebook','tiktok','youtube','follower','podcast','blog','page'], items: [
+      'Your messages sorted into brand enquiries, fans and spam, with brand enquiries sent to your email.',
+      'Captions and post drafts written from your voice notes, in your own voice.',
+      'A monthly summary of which posts brought in paid work.' ] },
+    { k: ['restaurant','cafe','café','coffee','food','takeaway','kitchen','catering','bakery','bar','pub','shisa','braai'], items: [
+      'WhatsApp orders collected into one list the kitchen can read.',
+      'A stock count at closing that tells you what to order tomorrow.',
+      'Google reviews answered in your tone, with complaints sent to you first.' ] },
+    { k: ['account','bookkeep','tax','audit','finance','payroll'], items: [
+      'Receipts and invoices read, labelled and filed into the right client folder.',
+      'Clients reminded about missing documents before month end, so you don’t have to chase.' ] },
+    { k: ['property','rental','landlord','estate','letting','agency','apartment','flats','realtor'], items: [
+      'A WhatsApp agent like Alec that answers enquiries from your live stock.',
+      'One stock list that feeds your website and your adverts at the same time.',
+      'Every enquiry kept, so you can tell past enquirers when the right unit opens up.' ] },
+    { k: ['plumb','electric','builder','construction','contractor','handyman','painter','roof','solar','tiler','carpent'], items: [
+      'Job cards created from the photos and voice notes your team sends from site.',
+      'Quotes followed up until the client gives you a yes or a no.',
+      'A daily list of which jobs moved forward and which are stuck.' ] },
+    { k: ['shop','store','retail','boutique','clothing','spaza','fashion','hardware'], items: [
+      'A WhatsApp catalogue that answers stock questions from your real stock count.',
+      'An alert before a best seller runs out.' ] },
+    { k: ['clinic','doctor','dentist','physio','practice','vet','optom'], items: [
+      'Appointment reminders and easy rescheduling, so fewer slots go empty.',
+      'Forms filled in on the phone before the patient walks in.' ] },
+    { k: ['school','tutor','teacher','creche','academy','coach','gym','trainer','fitness','dance'], items: [
+      'Bookings and reminders on WhatsApp.',
+      'Fees followed up politely, so you aren’t the one chasing.' ] },
+    { k: ['transport','logistic','delivery','courier','truck','taxi','fleet','driver','moving'], items: [
+      'Drivers check in and send proof of delivery photos from their phones.',
+      'Customers get an arrival time on WhatsApp without calling the office.' ] }
+  ];
+  var fallback = [
+    'Most businesses have one job someone repeats by hand every day. That is usually where I start.',
+    'Tell me how a normal week runs and I’ll show you which part a system can take over.' ];
+
+  var input = document.getElementById('biz');
+  var answer = document.getElementById('answer');
+  var timer;
+  function render(raw) {
+    var text = (raw || '').trim();
+    var low = ' ' + text.toLowerCase() + ' ';
+    var hit = null;
+    for (var i = 0; i < book.length && !hit; i++) {
+      for (var j = 0; j < book[i].k.length; j++) { if (low.indexOf(book[i].k[j]) !== -1) { hit = book[i]; break; } }
+    }
+    var items = hit ? hit.items : fallback;
+    answer.textContent = '';
+    var said = document.createElement('p'); said.className = 'said';
+    said.textContent = text ? 'You said: ' + text : 'Example: a mechanic';
+    var h = document.createElement('h3'); h.textContent = hit || !text ? 'Where I would start' : 'Where we would start';
+    var ul = document.createElement('ul');
+    (text ? items : book[0].items).forEach(function (t) { var li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+    var fine = document.createElement('p'); fine.className = 'fine';
+    fine.textContent = 'These are starting points. The real plan comes from one conversation about how your week runs.';
+    answer.appendChild(said); answer.appendChild(h); answer.appendChild(ul); answer.appendChild(fine);
+    answer.classList.remove('swap'); void answer.offsetWidth; answer.classList.add('swap');
+  }
+  input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(function () { render(input.value); }, 220); });
+  document.getElementById('picks').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    input.value = b.getAttribute('data-v'); render(input.value);
+  });
+
+  /* Copy buttons */
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var val = btn.getAttribute('data-copy');
+      function done() { btn.textContent = 'Copied'; btn.classList.add('done'); setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1600); }
+      function sel() { var el = btn.parentNode.querySelector('.v'); var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done(); }
+      try { navigator.clipboard.writeText(val).then(done, sel); } catch (err) { sel(); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
