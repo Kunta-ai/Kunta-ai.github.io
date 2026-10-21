@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Busy Signal IT · AI automation solutions</title>
+<title>Busy Signal IT · It answers.</title>
 <meta name="description" content="Busy Signal IT builds AI agents, websites and business systems for any business with a routine. Edmund Gumbo, Johannesburg, working worldwide.">
 <meta name="theme-color" content="#0B0C11">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Busy Signal IT · AI automation solutions">
+<meta property="og:title" content="Busy Signal IT · It answers.">
 <meta property="og:description" content="AI agents, websites and business systems for any business with a routine.">
 <meta property="og:url" content="https://kunta-ai.github.io/">
 <meta property="og:image" content="https://kunta-ai.github.io/assets/brand/og-image.png">
@@ -186,6 +186,43 @@ main, header, footer { position: relative; z-index: 1; }
 .track span { display: inline-flex; align-items: center; gap: 40px; font-family: var(--display); font-weight: 700; font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
 .track span::after { content: ""; width: 10px; height: 10px; background: var(--grad); clip-path: polygon(0 0, 100% 50%, 0 100%); transform: rotate(-45deg); }
 @keyframes slide { to { transform: translateX(-50%); } }
+
+/* Mode toggle */
+.mode { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.mode button { display: inline-flex; align-items: center; gap: 7px; font-family: var(--display); font-size: 0.76rem; font-weight: 700; color: var(--ink-soft); background: transparent; border: 0; border-radius: 999px; padding: 7px 12px; cursor: pointer; transition: background 200ms var(--ease), color 200ms var(--ease); }
+.mode button svg { width: 15px; height: 15px; }
+.mode button[aria-pressed="true"] { background: var(--grad); color: var(--on-accent); }
+@media (max-width: 560px) { .mode button span { display: none; } .mode button { padding: 7px 9px; } }
+.svc { font-family: var(--display); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-top: 10px; }
+
+/* Switchboard */
+.board-sec { padding-block: clamp(36px, 5vw, 56px); border-block: 1px solid var(--line); background: color-mix(in srgb, var(--bg-2) 70%, transparent); }
+.board-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; }
+.board-line { font-family: var(--display); font-weight: 800; font-size: clamp(1.1rem, 0.9rem + 0.8vw, 1.5rem); letter-spacing: -0.015em; }
+.board-stat { margin-left: auto; font-family: var(--mono); font-size: 0.74rem; color: var(--ink-mute); }
+.board-stat b { color: var(--ok); font-weight: 500; }
+.board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+.line { position: relative; text-align: left; display: grid; grid-template-columns: 14px minmax(0, 1fr); column-gap: 10px; row-gap: 4px; align-items: center; padding: 14px 14px 12px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); cursor: pointer; font: inherit; transition: border-color 260ms var(--ease), transform 200ms var(--ease), box-shadow 260ms var(--ease); }
+.line:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.jack { width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line-2); transition: background 200ms var(--ease), border-color 200ms var(--ease); }
+.ln-name { font-family: var(--display); font-weight: 700; font-size: 0.88rem; }
+.ln-q { grid-column: 2; font-size: 0.8rem; color: var(--ink-soft); line-height: 1.35; min-height: 2.7em; }
+.ln-st { grid-column: 2; font-family: var(--mono); font-size: 0.66rem; color: var(--ink-mute); }
+.line.ring { border-color: color-mix(in srgb, var(--accent) 70%, var(--line)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent); }
+.line.ring .jack { background: var(--accent); border-color: var(--accent); animation: ringjack 520ms ease-in-out infinite; }
+.line.ring .ln-st { color: var(--accent); }
+.line.ok { border-color: color-mix(in srgb, var(--ok) 55%, var(--line)); }
+.line.ok .jack { background: var(--ok); border-color: var(--ok); }
+.line.ok .ln-st { color: var(--ok); }
+@keyframes ringjack { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); } 50% { transform: scale(1.15); box-shadow: 0 0 0 6px transparent; } }
+@media (max-width: 1000px) { .board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } .board-stat { margin-left: 0; } .ln-q { display: none; } }
+
+/* Live ops video */
+.ops { padding-block: calc(var(--section) * 0.6); }
+.ops-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+.ops video { width: 100%; aspect-ratio: 1 / 1; border-radius: 24px; border: 1px solid var(--line); background: #0B1020; display: block; box-shadow: 0 40px 80px -40px rgb(var(--shade) / 0.7); }
+@media (max-width: 860px) { .ops-grid { grid-template-columns: 1fr; } .ops video { max-width: 520px; } }
 
 /* Capabilities */
 .caps { padding-block: var(--section) calc(var(--section) * 0.6); }
@@ -439,10 +476,10 @@ footer { border-top: 1px solid var(--line); }
       <a class="hide-s" href="#work">Work</a>
       <a class="hide-s" href="#brand">Brand</a>
       <a class="hide-s" href="#credentials">Credentials</a>
-      <button class="theme" type="button" id="theme" aria-label="Switch to light mode">
-        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
-      </button>
+      <div class="mode" role="group" aria-label="Colour mode">
+        <button type="button" data-mode="dark" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span>Dark</span></button>
+        <button type="button" data-mode="light" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg><span>Light</span></button>
+      </div>
       <a class="btn" href="#contact">Start a project</a>
     </nav>
   </div>
@@ -454,7 +491,8 @@ footer { border-top: 1px solid var(--line); }
   <div class="hero-mark" aria-hidden="true"><svg class="bsm" viewBox="0 0 740 624" aria-hidden="true" focusable="false"><use href="#mk-b" class="mk-b"/><use href="#mk-tri" class="mk-tri"/><use href="#mk-a1" class="mk-a1"/><use href="#mk-a2" class="mk-a2"/></svg></div>
   <div class="wrap">
     <div>
-      <p class="tag">AI automation solutions</p>
+      <p class="tag">It answers.</p>
+      <p class="svc">AI agents · Automation · Web platforms · Payments</p>
       <h1>AI that answers, quotes and books for your <span class="rot" id="rot"><span class="grad-text on">workshop.</span><span class="grad-text">salon.</span><span class="grad-text">building site.</span><span class="grad-text">agency.</span><span class="grad-text">business.</span></span></h1>
       <p class="sub">Busy Signal IT designs and builds AI agents, websites and business systems for any business with a routine. I learn how your week runs, then build the part that runs itself.</p>
       <div class="cta">
@@ -483,12 +521,13 @@ footer { border-top: 1px solid var(--line); }
   </div>
 </section>
 
-<div class="ticker" aria-hidden="true">
-  <div class="track">
-    <span>Plumbers</span><span>Carpenters</span><span>Salons</span><span>Mechanics</span><span>Property agencies</span><span>Builders</span><span>Clinics</span><span>Restaurants</span><span>Shops</span><span>Creators</span>
-    <span>Plumbers</span><span>Carpenters</span><span>Salons</span><span>Mechanics</span><span>Property agencies</span><span>Builders</span><span>Clinics</span><span>Restaurants</span><span>Shops</span><span>Creators</span>
+<section class="board-sec" aria-label="Who it answers for">
+  <div class="wrap">
+    <div class="board-head"><p class="kicker">The switchboard</p><p class="board-line">No more busy signal. Every line gets answered.</p><p class="board-stat" aria-live="off"><b id="bcount">0</b> calls answered while you read this</p></div>
+    <div class="board" id="board"><button type="button" class="line" data-biz="Plumbing company"><span class="jack" aria-hidden="true"></span><span class="ln-name">Plumbers</span><span class="ln-q">“Can someone come today?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Hair salon"><span class="jack" aria-hidden="true"></span><span class="ln-name">Salons</span><span class="ln-q">“Any slots on Saturday?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Mechanic"><span class="jack" aria-hidden="true"></span><span class="ln-name">Mechanics</span><span class="ln-q">“How much for a service?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Property agency"><span class="jack" aria-hidden="true"></span><span class="ln-name">Property agencies</span><span class="ln-q">“Is the flat still available?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Building contractor"><span class="jack" aria-hidden="true"></span><span class="ln-name">Builders</span><span class="ln-q">“Can I get a quote?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Carpenter"><span class="jack" aria-hidden="true"></span><span class="ln-name">Carpenters</span><span class="ln-q">“How long for kitchen cupboards?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Medical practice"><span class="jack" aria-hidden="true"></span><span class="ln-name">Clinics</span><span class="ln-q">“Can I move my appointment?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Restaurant"><span class="jack" aria-hidden="true"></span><span class="ln-name">Restaurants</span><span class="ln-q">“Are you open tonight?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Clothing shop"><span class="jack" aria-hidden="true"></span><span class="ln-name">Shops</span><span class="ln-q">“Do you have it in a medium?”</span><span class="ln-st">Line open</span></button><button type="button" class="line" data-biz="Content creator"><span class="jack" aria-hidden="true"></span><span class="ln-name">Creators</span><span class="ln-q">“We would like to sponsor you”</span><span class="ln-st">Line open</span></button></div>
+    <p class="cap">Tap your line to see what I would build for you.</p>
   </div>
-</div>
+</section>
 
 <section class="caps" id="build">
   <div class="wrap">
@@ -507,7 +546,7 @@ footer { border-top: 1px solid var(--line); }
       <article class="card cap-card rv">
         <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></span>
         <h3>Business websites</h3>
-        <p>Fast sites on your own domain, with WhatsApp, call and quote buttons on every screen. Built to win work from a phone.</p>
+        <p>Fast sites on your own domain, with WhatsApp, call and quote buttons on every screen, and online payments when you need them.</p>
         <p class="eg">e.g. jackenterprise.co.za</p>
       </article>
       <article class="card cap-card rv">
@@ -533,7 +572,8 @@ footer { border-top: 1px solid var(--line); }
         <p class="case-no"><b>Case 01</b> RISKPROP Realty · Property · Live</p>
         <h2 class="h2">One database. One button. Alec knows instantly.</h2>
       </div>
-      <p class="lead">For RISKPROP Realty I built the whole system behind their leasing: a Stock Manager where the team prices and lists every unit, one database underneath it, and Alec, an AI agent who answers tenants on WhatsApp day and night. Press a button in the Stock Manager and Alec, the website and the adverts all know at once.</p>
+      <div><p class="lead">For RISKPROP Realty I built the whole system behind their leasing: a Stock Manager where the team prices and lists every unit, one database underneath it, and Alec, an AI agent who answers tenants on WhatsApp day and night. Press a button in the Stock Manager and Alec, the website and the adverts all know at once.</p>
+        <div class="cta"><a class="btn" href="https://wa.me/27695736277?text=Hi%20Alec%2C%20I%20found%20you%20on%20the%20Busy%20Signal%20IT%20portfolio." target="_blank" rel="noopener">Chat to Alec on WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a><a class="btn ghost" href="https://riskproprealty.co.za" target="_blank" rel="noopener">Visit riskproprealty.co.za</a></div></div>
     </div>
 
     <div class="sync rv" id="sync">
@@ -574,7 +614,7 @@ footer { border-top: 1px solid var(--line); }
     <div class="built">
       <article class="card bcard hero-b rv"><h3>Alec <span class="pill">Live</span></h3><p>The AI agent on the agency's WhatsApp and Property24 adverts. Reads live stock, quotes real prices, sends photos, books viewings and tells the agent on duty.</p></article>
       <article class="card bcard rv"><h3>Stock Manager <span class="pill">Live</span></h3><p>Where the team prices, edits and switches units on and off. Bulk rent increases with a preview, a record of who changed what, three levels of access.</p></article>
-      <article class="card bcard rv"><h3>Website <span class="pill">Live</span></h3><p>Listings come straight from the Stock Manager and disappear the moment a unit is let. It replaced a paid website vendor.</p></article>
+      <article class="card bcard rv"><h3>Website <span class="pill">Live</span></h3><p>Listings come straight from the Stock Manager and disappear the moment a unit is let. It replaced a paid website vendor. <a href="https://riskproprealty.co.za" target="_blank" rel="noopener">riskproprealty.co.za</a></p></article>
       <article class="card bcard rv"><h3>ROY <span class="pill">In use</span></h3><p>Takes the monthly municipal and electricity figures and flags the bills that look wrong, so they get checked and fixed.</p></article>
       <article class="card bcard rv"><h3>Team board <span class="pill">In use</span></h3><p>One shared board for six departments, from cleaning to accounts, so the owner and the team see the same picture.</p></article>
     </div>
@@ -689,7 +729,7 @@ footer { border-top: 1px solid var(--line); }
     </div>
     <div class="brand-grid">
       <div class="tile t-main rv">
-        <div class="lock"><img src="assets/brand/busy-signal-mark.svg" class="bsm" width="300" height="253" alt=""><div><span class="word">Busy<br>Signal <i>IT</i></span><span class="tag">AI automation solutions</span></div></div>
+        <div class="lock"><img src="assets/brand/busy-signal-mark.svg" class="bsm" width="300" height="253" alt=""><div><span class="word">Busy<br>Signal <i>IT</i></span><span class="tag">It answers.</span></div></div>
         <span class="note">Primary lockup · dark</span>
       </div>
       <div class="tile t-cream rv"><img src="assets/brand/busy-signal-mark-light.svg" width="300" height="253" alt="Busy Signal IT mark in black and red on cream"><span class="note">On light</span></div>
@@ -732,6 +772,18 @@ footer { border-top: 1px solid var(--line); }
   </div>
 </section>
 
+<section class="ops" id="live">
+  <div class="wrap ops-grid">
+    <div class="rv"><video src="assets/media/busy-signal-live-ops.mp4" poster="assets/media/busy-signal-live-ops-poster.jpg" muted loop playsinline controls preload="none" id="opsv" aria-label="Busy Signal IT live operations video"></video></div>
+    <div class="rv">
+      <p class="kicker">Live operations</p>
+      <h2 class="h2">Our automations, working in real time.</h2>
+      <p class="lead">A look inside a production flow: a QR code scan becomes a conversation, the AI agent checks live stock, books a viewing and tells the team, while every run is logged as it happens.</p>
+      <div class="cta"><a class="btn ghost" href="https://www.linkedin.com/in/edmund-gumbo-a6965584" target="_blank" rel="noopener">Follow on LinkedIn</a></div>
+    </div>
+  </div>
+</section>
+
 <section class="how" id="how">
   <div class="wrap">
     <div class="rv">
@@ -768,7 +820,7 @@ footer { border-top: 1px solid var(--line); }
 
 <footer>
   <div class="wrap foot">
-    <div class="lockup"><svg class="bsm" viewBox="0 0 740 624" aria-hidden="true" focusable="false"><use href="#mk-b" class="mk-b"/><use href="#mk-tri" class="mk-tri"/><use href="#mk-a1" class="mk-a1"/><use href="#mk-a2" class="mk-a2"/></svg><div><span class="word">Busy Signal <i>IT</i></span><span class="tag">AI automation solutions</span></div></div>
+    <div class="lockup"><svg class="bsm" viewBox="0 0 740 624" aria-hidden="true" focusable="false"><use href="#mk-b" class="mk-b"/><use href="#mk-tri" class="mk-tri"/><use href="#mk-a1" class="mk-a1"/><use href="#mk-a2" class="mk-a2"/></svg><div><span class="word">Busy Signal <i>IT</i></span><span class="tag">It answers.</span></div></div>
     <div class="meta">Founded in Johannesburg in 2020<br>© 2026 Edmund Gumbo</div>
   </div>
 </footer>
@@ -781,10 +833,36 @@ footer { border-top: 1px solid var(--line); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
   /* Theme */
-  var tb = document.getElementById('theme');
-  function label() { var d = root.getAttribute('data-theme') !== 'light'; tb.setAttribute('aria-label', d ? 'Switch to light mode' : 'Switch to dark mode'); var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', d ? '#0B0C11' : '#FAF8F4'); }
-  label();
-  tb.addEventListener('click', function () { var n = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; root.setAttribute('data-theme', n); try { localStorage.setItem('bs-theme', n); } catch (e) {} label(); });
+  var modeBtns = document.querySelectorAll('.mode button');
+  function setMode(m, save) {
+    root.setAttribute('data-theme', m);
+    modeBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-mode') === m ? 'true' : 'false'); });
+    var mt = document.querySelector('meta[name="theme-color"]'); if (mt) mt.setAttribute('content', m === 'light' ? '#FAF8F4' : '#0B0C11');
+    if (save) { try { localStorage.setItem('bs-theme', m); } catch (e) {} }
+  }
+  setMode(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark', false);
+  modeBtns.forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-mode'), true); }); });
+
+  /* Switchboard */
+  var lines = document.querySelectorAll('.line'), bcount = document.getElementById('bcount'), answered = 0, lastL = -1;
+  function ringOne() {
+    var i; do { i = Math.floor(Math.random() * lines.length); } while (i === lastL && lines.length > 1); lastL = i;
+    var l = lines[i], st = l.querySelector('.ln-st');
+    l.classList.remove('ok'); l.classList.add('ring'); st.textContent = 'Ringing';
+    setTimeout(function () { l.classList.remove('ring'); l.classList.add('ok'); st.textContent = 'Answered by AI'; answered++; bcount.textContent = answered; }, 1500);
+    setTimeout(function () { l.classList.remove('ok'); st.textContent = 'Line open'; }, 5200);
+  }
+  if (!reduce) { setTimeout(ringOne, 900); setInterval(ringOne, 1900); }
+  lines.forEach(function (l) { l.addEventListener('click', function () {
+    var inp = document.getElementById('biz'); inp.value = l.getAttribute('data-biz'); inp.dispatchEvent(new Event('input'));
+    document.getElementById('yours').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }); });
+
+  /* Video plays when visible */
+  var ov = document.getElementById('opsv');
+  if (ov && 'IntersectionObserver' in window && !reduce) {
+    new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { ov.preload = 'auto'; var p = ov.play(); if (p && p.catch) p.catch(function () {}); } else { ov.pause(); } }); }, { threshold: 0.4 }).observe(ov);
+  }
 
   /* Reveal */
   var rv = document.querySelectorAll('.rv');
